@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /*
     Given a character array s (as a pointer), return the number of 
@@ -7,9 +8,13 @@
     
     Do not just use the `strlen` function from the standard libary.
 */
-int string_length(char *s)
-{
+int string_length(char *s) {
+  int count = 0;
 
+  while (*s++)
+    ++count;
+
+  return count;
 }
 
 /*
@@ -18,9 +23,15 @@ int string_length(char *s)
     enough space for the reversed string. Don't forget to terminate 
     the reversed string with a null character. Return the rv array.
 */
-char *reverse_string(char *rv, char *s)
-{
+char *reverse_string(char *rv, char *s) {
+  int len = strlen(s);
 
+  for (int i = 0; i < len; i++) {
+    rv[len-i-1] = s[i];
+  }
+  rv[len] = '\0';
+
+  return rv;
 }
 
 #ifndef TESTING
@@ -37,4 +48,3 @@ int main(void)
     return 0;
 }
 #endif
-    
