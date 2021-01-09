@@ -13,9 +13,11 @@
     string_copy(buffer, "Hello!");
     printf("%s", buffer); // Prints "Hello!"
 */
-void string_copy(char *x, char *y)
-{
+void string_copy(char *x, char *y) {
+  while (*y)
+    *x++ = *y++;
 
+  *x = '\0';
 }
 
 /*
@@ -26,9 +28,15 @@ void string_copy(char *x, char *y)
 
     Do not use the `strchr` function from the standard library.
 */
-char *find_char(char *str, char c)
-{
+char *find_char(char *str, char c) {
+  while (*str) {
+    if (*str == c)
+      return str;
 
+    str++;
+  }
+
+  return NULL;
 }
 
 /*
@@ -39,9 +47,24 @@ char *find_char(char *str, char c)
 
     Do not use the `strstr` function from the standard library.
 */
-char *find_string(char *haystack, char *needle)
-{
+char *find_string(char *haystack, char *needle) {
 
+  while (*haystack) {
+    char* haystackPtr = haystack;
+    char* needlePtr = needle;
+
+    while (*haystackPtr && *needlePtr && *haystackPtr == *needlePtr) {
+      haystackPtr++;
+      needlePtr++;
+    }
+
+    if (*needlePtr == '\0')
+      return haystack;
+
+    haystack++;
+  }
+
+  return NULL;
 }
 
 #ifndef TESTING
