@@ -10,9 +10,20 @@
     You may want to use the string_length function to figure out the
     length of the input string.
 */
-char *string_dup(char *src)
-{
+char *string_dup(char *src) {
+  char *dup_str = malloc(strlen(src) * sizeof(char));
+  if (dup_str == NULL) {
+    printf("Malloc failed\n");
+    return src;
+  }
 
+  char *front = dup_str;
+  while (*src) {
+    *dup_str++ = *src++;
+  }
+
+  *dup_str = '\0';
+  return front;
 }
 
 /*
@@ -22,9 +33,12 @@ char *string_dup(char *src)
     performing the copying. `n` is the amount of data that should be copied
     from `src` to `dest`. 
 */
-void mem_copy(void *dest, const void *src, int n)
-{
+void mem_copy(void *dest, const void *src, int n) {
+  char *cast_dest = (char *) dest;
+  char *cast_src = (char *) src;
 
+  for (int i = 0; i < n; i++)
+    *cast_dest++ = *cast_src++;
 }
 
 /*
@@ -38,9 +52,16 @@ void mem_copy(void *dest, const void *src, int n)
     
     Do not use the `realloc` function from the standard libary.
 */
-void *resize_memory(void *ptr, int old_size, int new_size)
-{
+void *resize_memory(void *ptr, int old_size, int new_size) {
+  char *cast_ptr = (char *) ptr;
+  char *realloced_mem = malloc(new_size * sizeof(char));
+  char *front = realloced_mem;
+  if (realloced_mem != NULL) {
+    for (int i = 0; i < old_size; i++)
+      *realloced_mem++ = *cast_ptr++;
+  }
 
+  return front;
 }
 
 #ifndef TESTING
@@ -54,7 +75,7 @@ int main(void)
     int numbers[] = {100, 55, 4, 98, 10, 18, 90, 95, 43, 11, 47, 67, 89, 42, 49, 79};
     int n = sizeof(numbers) / sizeof(numbers[0]);
     int *target = malloc(n * sizeof(int));
-    
+
     mem_copy(target, numbers, n * sizeof(int));
 
     printf("Copied array: ");
@@ -69,7 +90,7 @@ int main(void)
     char *path = string_dup("/students/");
     int url_length = string_length(url);
     int path_length = string_length(path);
-    
+
     int new_length = url_length - 1 + path_length;
     char *new_url = resize_memory(url, url_length, new_length);
     char *p = new_url + url_length;
